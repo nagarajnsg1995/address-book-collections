@@ -1,13 +1,18 @@
 package com.bridgelabz;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Scanner;
 
 public class AddressBook {
-    ArrayList<Contact> Book = new ArrayList<>();
+    ArrayList<Contact> Book = new ArrayList<Contact>();
     static Scanner scanner = new Scanner(System.in);
 
-    public void AddDetails() {
+    static HashMap<String, ArrayList<Contact>> hashmap = new HashMap<>();
+    static AddressBook Details = new AddressBook();
+
+    // add details
+    public void addDetails() {
 
         Scanner scanner = new Scanner(System.in);
         Contact details = new Contact();
@@ -21,9 +26,9 @@ public class AddressBook {
         details.setCity(scanner.nextLine());
         System.out.println("Enter the State ");
         details.setState(scanner.nextLine());
-        System.out.println("Enter the Emai");
+        System.out.println("Enter the Email of person");
         details.setEmail(scanner.nextLine());
-        System.out.println("Enter the Zip code ");
+        System.out.println("Enter the Zip code of person");
         details.setZipCode(scanner.nextInt());
         System.out.println("Enter the mobile number");
         details.setPhoneNumber(scanner.nextInt());
@@ -33,6 +38,7 @@ public class AddressBook {
         System.out.println(Book);
     }
 
+    // edit the details
 
     public void editDetails() {
 
@@ -89,6 +95,7 @@ public class AddressBook {
 
     }
 
+    // display the details
 
     public void output() {
 
@@ -96,49 +103,131 @@ public class AddressBook {
     }
 
 
+    // delete the details
+
     public void deleteDetails() {
 
-        System.out.println("Confirm your first name to delete details: ");
+        System.out.println("Confirm your first name to edit details: ");
         String name = scanner.next();
 
         for (int i = 0; i < Book.size(); i++) {
             if (Book.get(i).getFirstName().equals(name)) {
                 System.out.println("Select form below to change: ");
                 Book.remove(i);
+//                Book.get(i).setFirstName("");
+//                Book.get(i).setLastName("");
             }
         }
         System.out.println(Book);
     }
 
-    public static void main(String[] args) {
-        int i = 0;
+    public void createAddressBook() {
 
-        System.out.println("Welcome to Address Book Management System");
-
-        AddressBook details = new AddressBook();
-
-        while (i == 0) {
-            System.out.println("What you want to do: ");
-            System.out.println("1.Add details.\n2.Edit details.\n3.Delete the details");
+        while (true) {
+            System.out.println("Choose what you want to do: ");
+            System.out.println(
+                    "1.Create new address book.\n2.Edit existing address book.\n3.Display all address books.\n4.exit");
             int choose = scanner.nextInt();
+
+            if (choose == 4) {
+                System.out.println("Exited");
+                break;
+            }
+
             switch (choose) {
                 case 1:
-                    details.AddDetails();
+                    System.out.println("Enter the name of address book: ");
+                    String addressName = scanner.next();
+
+                    // condition to check for uniqueness of address book.
+                    if (hashmap.containsKey(addressName)) {
+                        System.out.println("Address book name exits, enter different name");
+                        break;
+                    }
+
+                    ArrayList<Contact> newaddressbook = new ArrayList<>();
+                    Book = newaddressbook;
+                    while (true) {
+                        int choose1;
+                        System.out.println("Choose what you want to do: ");
+                        System.out.println("1.Add details.\n2.Edit details.\n3.Delete contact.\n4.Exit");
+                        choose1 = scanner.nextInt();
+                        if (choose1 == 4) {
+                            System.out.println("Exited");
+                            break;
+                        }
+                        switch (choose1) {
+                            case 1:
+                                Details.addDetails();
+                                break;
+                            case 2:
+                                Details.editDetails();
+                                break;
+                            case 3:
+                                Details.deleteDetails();
+                                break;
+                            default:
+                                System.out.println("Choose valid option");
+                                break;
+                        }
+                        hashmap.put(addressName, Book);
+                        System.out.println(hashmap);
+                    }
                     break;
+
                 case 2:
-                    details.editDetails();
+                    System.out.println("Enter the name of address book: ");
+                    String oldAddressBook = scanner.next();
+
+                    // condition to check whether address book exists or no.
+                    if (hashmap.containsKey(oldAddressBook)) {
+
+                        ArrayList<Contact> oldaddressbook = new ArrayList<>();
+                        Book = oldaddressbook;
+                        Book = hashmap.get(oldAddressBook);
+                        while (true) {
+                            System.out.println("Choose what you want to do: ");
+                            System.out.println("1.Add details.\n2.Edit details.\n3.Delete contact.\n4.Exit");
+                            int choose2 = scanner.nextInt();
+                            if (choose2 == 4) {
+                                System.out.println("Exited");
+                                break;
+                            }
+                            switch (choose2) {
+                                case 1:
+                                    Details.addDetails();addDetails();
+                                    break;
+                                case 2:
+                                    Details.editDetails();
+                                    break;
+                                case 3:
+                                    Details.deleteDetails();
+                                    break;
+                                default:
+                                    System.out.println("Choose valid option");
+                                    break;
+                            }
+                            hashmap.put(oldAddressBook, Book);
+                            System.out.println(hashmap);
+                            System.out.println( );
+                        }
+                    } else {
+                        System.out.println("Enter valid address book name");
+                    }
                     break;
+
                 case 3:
-                    details.deleteDetails();
+                    System.out.println(hashmap);
                     break;
+
                 default:
-                    i = 1;
-                    System.out.println("Wrong option");
-                    details.output();
-                    break;
+                    System.out.println("Enter valid option");
+
             }
         }
-
     }
 
+    public static void main(String[] args) {
+        Details.createAddressBook();
+    }
 }
