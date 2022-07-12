@@ -11,7 +11,7 @@ public class AddressBook {
     static HashMap<String, ArrayList<Contact>> hashmap = new HashMap<>();
     static AddressBook Details = new AddressBook();
 
-    // add details
+
     public void addDetails() {
 
         Scanner scanner = new Scanner(System.in);
@@ -26,17 +26,17 @@ public class AddressBook {
         details.setCity(scanner.nextLine());
         System.out.println("Enter the State ");
         details.setState(scanner.nextLine());
-        System.out.println("Enter the Email of person");
+        System.out.println("Enter the Email ");
         details.setEmail(scanner.nextLine());
-        System.out.println("Enter the Zip code of person");
+        System.out.println("Enter the Zip code ");
         details.setZipCode(scanner.nextInt());
-        System.out.println("Enter the mobile number");
+        System.out.println("Enter the Phone number");
         details.setPhoneNumber(scanner.nextInt());
 
         Book.add(details);
-
-        System.out.println(Book);
+        viewAllBooks();
     }
+
 
     // edit the details
 
@@ -103,19 +103,19 @@ public class AddressBook {
     }
 
 
-    // delete the details
+    // delete details
 
     public void deleteDetails() {
 
-        System.out.println("Confirm your first name to edit details: ");
+        System.out.println("Confirm your first name to delete details: ");
         String name = scanner.next();
 
         for (int i = 0; i < Book.size(); i++) {
             if (Book.get(i).getFirstName().equals(name)) {
                 System.out.println("Select form below to change: ");
                 Book.remove(i);
-//                Book.get(i).setFirstName("");
-//                Book.get(i).setLastName("");
+                // Book.get(i).setFirstName("");
+                // Book.get(i).setLastName("");
             }
         }
         System.out.println(Book);
@@ -145,8 +145,9 @@ public class AddressBook {
                         break;
                     }
 
-                    ArrayList<Contact> newaddressbook = new ArrayList<>();
-                    Book = newaddressbook;
+                    ArrayList<Contact> newAddressBook = new ArrayList<>();
+
+                    Book = newAddressBook;
                     while (true) {
                         int choose1;
                         System.out.println("Choose what you want to do: ");
@@ -171,20 +172,20 @@ public class AddressBook {
                                 break;
                         }
                         hashmap.put(addressName, Book);
-                        System.out.println(hashmap);
+                        viewMap();
                     }
                     break;
 
                 case 2:
                     System.out.println("Enter the name of address book: ");
-                    String oldAddressBook = scanner.next();
+                    String addressNameOld = scanner.next();
 
                     // condition to check whether address book exists or no.
-                    if (hashmap.containsKey(oldAddressBook)) {
+                    if (hashmap.containsKey(addressNameOld)) {
 
-                        ArrayList<Contact> oldaddressbook = new ArrayList<>();
-                        Book = oldaddressbook;
-                        Book = hashmap.get(oldAddressBook);
+                        ArrayList<Contact> oldAddresBook = new ArrayList<>();
+                        Book = oldAddresBook;
+                        Book = hashmap.get(addressNameOld);
                         while (true) {
                             System.out.println("Choose what you want to do: ");
                             System.out.println("1.Add details.\n2.Edit details.\n3.Delete contact.\n4.Exit");
@@ -195,7 +196,8 @@ public class AddressBook {
                             }
                             switch (choose2) {
                                 case 1:
-                                    Details.addDetails();addDetails();
+                                    Details.addDetails();
+                                    addDetails();
                                     break;
                                 case 2:
                                     Details.editDetails();
@@ -207,9 +209,9 @@ public class AddressBook {
                                     System.out.println("Choose valid option");
                                     break;
                             }
-                            hashmap.put(oldAddressBook, Book);
-                            System.out.println(hashmap);
-                            System.out.println( );
+                            hashmap.put(addressNameOld, Book);
+                            viewMap();
+
                         }
                     } else {
                         System.out.println("Enter valid address book name");
@@ -217,7 +219,7 @@ public class AddressBook {
                     break;
 
                 case 3:
-                    System.out.println(hashmap);
+                    viewMap();
                     break;
 
                 default:
@@ -225,6 +227,15 @@ public class AddressBook {
 
             }
         }
+    }
+    public void viewAllBooks () {
+        for (Contact book : Book) {
+            System.out.println(book);
+        }
+    }
+    public void viewMap(){
+        for (String name: hashmap.keySet()) { String key = name;
+            String value = hashmap.get(name).toString(); System.out.println(key + " " + value); }
     }
 
     public static void main(String[] args) {
